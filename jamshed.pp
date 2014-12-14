@@ -119,7 +119,7 @@ ruby_gems {
 
 ### DotFiles
 
-file { [ "/home/$local_user/scripts" ]:
+file { [ "$local_home/scripts" ]:
   ensure => "directory",
   owner  => $local_user,
 }
