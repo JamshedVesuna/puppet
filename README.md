@@ -5,7 +5,10 @@ Personal Puppet
 
 Installation
 ============
-*
+* Complete raw setup:
+    * `TODO`
+
 OR
-* Install puppet and apply my puppet file in one line:
-    * `sudo apt-get install puppet && sudo puppet apply jamshed.pp`
+
+* If you have cloned this repository, just run:
+    * `sh setup.sh`
