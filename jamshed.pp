@@ -137,13 +137,14 @@ exec { "download_altoduo_dotfiles":
   path    => $paths,
 }
 
-#exec { "setup_altoduo_dotfiles":
-  #require => [ Exec["check_presence_dotfiles"], Package['git'] ],
-  #command => "bash scripts/setup",
-  #cwd     => "$local_home/scripts/dotfiles",
-  #user    => $local_user,
-  #path    => $paths,
-#}
+# setup_altoduo_dotfiles will only install dotfiles iff not present
+exec { "setup_altoduo_dotfiles":
+  require => [ Exec["check_presence_dotfiles"], Package['git'] ],
+  command => "bash -c 'source ~/.bashrc && bash scripts/setup'",
+  cwd     => "$local_home/scripts/dotfiles",
+  user    => $local_user,
+  path    => $paths,
+}
 
 exec { "update_altoduo_dotfiles":
   require => [ Exec["check_presence_dotfiles"], Package['git'] ],
