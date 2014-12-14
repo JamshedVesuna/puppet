@@ -6,7 +6,7 @@ Personal Puppet
 Installation
 ============
 * Complete raw setup:
-    * `TODO`
+    * `curl http://jamnoise.com/raw-setup.sh > /tmp/raw-setup.sh; sh /tmp/raw-setup.sh`
 
 OR
 
