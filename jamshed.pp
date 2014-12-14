@@ -1,10 +1,10 @@
 $local_user = "jamshed"
 $local_home = "/home/$local_user"
-$paths = "/usr/local/bin/:/bin/:/usr/bin/"
+$paths = [ "/usr/local/bin/", "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ]
 
 user {'jamshed':
      ensure => present,
-     shell => "/bin/bash",
+     shell  => "/bin/bash",
 }
 
 exec {'apt-install':
@@ -16,14 +16,14 @@ exec { "apt-update":
 }
 
 define local_package () {
-  package {"$name":
-    ensure => present,
+  package { "$name":
+    ensure  => present,
     require => Exec['apt-update'],
   }
 }
 
 define local_absent () {
-  package {"$name":
+  package { "$name":
     ensure => absent,
   }
 }
@@ -97,15 +97,15 @@ local_package {
 ### Ruby Gems
 
 define ruby_gems () {
-  package {"$name":
-    ensure => ['installed', 'latest'],
+  package { "$name":
+    ensure   => ['installed', 'latest'],
     provider => 'gem',
   }
 }
 
 define remove_ruby_gems () {
-  package {"$name":
-    ensure => absent,
+  package { "$name":
+    ensure   => absent,
     provider => 'gem',
   }
 }
@@ -120,28 +120,35 @@ ruby_gems {
 ### DotFiles
 
 file { [ "/home/$local_user/scripts" ]:
-    ensure => "directory",
-    owner  => "$local_user",
+  ensure => "directory",
+  owner  => $local_user,
 }
 
-exec { "install_altoduo_dotfiles":
+exec { "check_presence_dotfiles":
+  command => "/bin/true",
+  onlyif  => "/usr/bin/test -e /home/$local_user/dotfiles",
+}
+
+exec { "download_altoduo_dotfiles":
   require => Package['git'],
   command => "git clone https://github.com/altoduo/dotfiles.git",
   cwd     => "$local_home/scripts/",
   creates => "$local_home/scripts/dotfiles",
-  path    => "/usr/local/bin/:/bin/:/usr/bin/",
-  user => "$local_user",
+  path    => $paths,
 }
 
-exec {"check_presence_dotfiles":
-  command => "/bin/true",
-  onlyif => "/usr/bin/test -e /home/$local_user/dotfiles",
-}
+#exec { "setup_altoduo_dotfiles":
+  #require => [ Exec["check_presence_dotfiles"], Package['git'] ],
+  #command => "bash scripts/setup",
+  #cwd     => "$local_home/scripts/dotfiles",
+  #user    => $local_user,
+  #path    => $paths,
+#}
 
 exec { "update_altoduo_dotfiles":
   require => [ Exec["check_presence_dotfiles"], Package['git'] ],
   command => "git pull origin master && git submodule sync && git submodule update --init --recursive && git submodule foreach git pull origin master",
   cwd     => "$local_home/scripts/dotfiles",
+  user    => $local_user,
   path    => $paths,
-  user => "$local_user",
 }
