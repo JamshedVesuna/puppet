@@ -126,12 +126,13 @@ file { [ "$local_home/scripts" ]:
 
 exec { "check_presence_dotfiles":
   command => "/bin/true",
-  onlyif  => "/usr/bin/test -e /home/$local_user/dotfiles",
+  onlyif  => "/usr/bin/test -e $local_home/scripts/dotfiles",
 }
 
 exec { "download_altoduo_dotfiles":
   require => Package['git'],
   command => "git clone https://github.com/altoduo/dotfiles.git",
+  onlyif  => "/usr/bin/test -e $local_home/scripts",
   cwd     => "$local_home/scripts/",
   creates => "$local_home/scripts/dotfiles",
   path    => $paths,

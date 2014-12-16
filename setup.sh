@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo apt-get install puppet
+sudo apt-get -y install puppet
 sudo puppet apply jamshed.pp
