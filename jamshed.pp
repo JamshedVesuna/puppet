@@ -56,18 +56,21 @@ local_package {
   'rdiff-backup':;
   'rsync':;
 
-  ## Misc tools
+  ## Searching
+  'grep':;
   'ack-grep':;
+  'silversearcher-ag':;
+
+  ## Processes
+  'htop':;
+
+  ## Misc tools
   'bash':;
   'cron':;
   'screen':;
   'tar':;
   'tmux':;
   'xclip':;
-
-  ## Searching
-  'grep':;
-  'silversearcher-ag':;
 
   ## Passwords and Access
   #'keepassx':;
