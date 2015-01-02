@@ -38,6 +38,7 @@ local_package {
   'ruby':;
   'ruby1.9.1':;
   'ruby1.9.1-dev':;
+  'markdown':;
 
   ## Providers
   'python-pip':;
