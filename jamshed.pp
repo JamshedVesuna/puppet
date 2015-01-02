@@ -7,18 +7,10 @@ user {'jamshed':
      shell  => "/bin/bash",
 }
 
-exec {'apt-install':
-  command => '/usr/bin/apt-get install',
-}
-
-exec { "apt-update":
-    command => "/usr/bin/apt-get update",
-}
-
 define local_package () {
   package { "$name":
-    ensure  => present,
-    require => Exec['apt-update'],
+    ensure  => latest,
+    #require => Exec['apt-update'],
   }
 }
 
@@ -57,6 +49,9 @@ local_package {
   'rdiff-backup':;
   'rsync':;
 
+  ## Cli
+  'zsh':;
+
   ## Searching
   'grep':;
   'ack-grep':;
@@ -72,31 +67,36 @@ local_package {
   'tar':;
   'tmux':;
   'xclip':;
-
-  ## Passwords and Access
-  #'keepassx':;
-  #'keychain':;
-
-  ## Virtual
-  #'virtualbox':;
-  #'vagrant':;
-
-  ## Music
-  #'spotify-client':
-    #require => Apt_line['spotify'];
-
-  ## File Syncing
-  #'dropbox':
-    #require => [
-      #Apt_line['dropbox'],
-      #Package['python-gpgme'],
-      #Package['libappindicator1']
-    #];
 }
 
 #local_absent {
 #}
 
+### Python Pip
+
+define python_pip () {
+  package { "$name":
+    ensure   => ['installed', 'latest'],
+    provider => 'pip',
+  }
+}
+
+define remove_python_pip () {
+  package { "$name":
+    ensure   => absent,
+    provider => 'pip',
+  }
+}
+
+python_pip {
+  'cronos':;
+  'ipdb':;
+  'ipython':;
+  'urllib3':;
+}
+
+#remove_python_pip {
+#}
 
 ### Ruby Gems
 
