@@ -2,7 +2,7 @@ $local_user = "jamshed"
 $local_home = "/home/$local_user"
 $paths = [ "/usr/local/bin/", "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ]
 
-user {'jamshed':
+user {$local_user:
      ensure => present,
      shell  => "/bin/bash",
 }
